@@ -140,13 +140,16 @@ export function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
-eexport function formatNumber(amount: number, maxDecimals: number = 6): string {
-  // Nos aseguramos de que los decimales máximos nunca sean menores que los mínimos (2)
-  const safeMaxDecimals = Math.max(2, maxDecimals);
-  
+export function formatNumber(amount: number, maxDecimals: number = 6): string {
+  // Protección total: si por error llega un número menor a 2, lo fijamos en 2
+  const finalMax = maxDecimals < 2 ? 2 : maxDecimals;
+
   return new Intl.NumberFormat('es-ES', {
     minimumFractionDigits: 2,
-    maximumFractionDigits: safeMaxDecimals,
+    maximumFractionDigits: finalMax,
   }).format(amount);
 }
+
+   
+
 
