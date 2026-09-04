@@ -34,15 +34,22 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Initialize Capacitor and Create Android Project
+      - name: Initialize Capacitor and Generate Native Android Files
         run: |
           npm install @capacitor/core @capacitor/cli @capacitor/android
           npx cap init "ANSAMA Comparador" "com.ansama.comparador" --web-dir=dist
-          npx cap add android
-          mkdir -p android/app/src/main/assets/public
-
-      - name: Copy Web Build to Android Project
-        run: npx cap sync android
+          # Forzamos la creación del entorno Android completo
+          npx cap add android || true
+          
+      - name: Sync and Verify Android Project
+        run: |
+          npx cap sync android
+          # Si la carpeta gradle no existe, forzamos su estructura base
+          cd android
+          if [ ! -f "gradlew" ]; then
+            gradle wrapper --gradle-version 8.2
+          fi
+          chmod +x gradlew
 
       - name: Build Android APK (Release)
         run: |
