@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Esto te permite activar la compilación manualmente con un botón
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,16 +18,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
 
       - name: Build Web Application
         run: npm run build
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
 
       - name: Setup Java Environment
         uses: actions/setup-java@v4
@@ -35,11 +31,15 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Initialize Capacitor for Mobile
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Initialize Capacitor and Create Android Project
         run: |
           npm install @capacitor/core @capacitor/cli @capacitor/android
           npx cap init "ANSAMA Comparador" "com.ansama.comparador" --web-dir=dist
           npx cap add android
+          mkdir -p android/app/src/main/assets/public
 
       - name: Copy Web Build to Android Project
         run: npx cap sync android
