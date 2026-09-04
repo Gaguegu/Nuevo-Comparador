@@ -1,0 +1,6 @@
+{
+  "name": "ANSAMA Comparador de Tarifas Eléctricas",
+  "description": "Comparador profesional de tarifas de luz y comercializadoras eléctricas de ANSAMA con desglose de potencia P1-P6, consumo, impuestos, IVA y comparativas de ahorro.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
