@@ -21,6 +21,10 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenMobilePreview,
 }) => {
   const cheapestResult = summary.results.find((r) => r.tariffId === summary.cheapestTariffId);
+  const rawBase = import.meta.env.BASE_URL || './';
+  const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+  const zipUrl = `${base}ansama-comparador-completo.zip`;
+  const pdfUrl = `${base}manual-usuario-ansama.pdf`;
 
   return (
     <header className="w-full bg-[#0a0a0c] text-white shadow-xl border-b-2 border-red-600 sticky top-0 z-30">
@@ -60,7 +64,7 @@ export const Header: React.FC<HeaderProps> = ({
             )}
 
             <a
-              href="/ansama-comparador-completo.zip"
+              href={zipUrl}
               download="ansama-comparador-completo.zip"
               className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95"
               title="Descargar el proyecto completo en archivo ZIP"
@@ -70,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({
             </a>
 
             <a
-              href="/manual-usuario-ansama.pdf"
+              href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95"
@@ -148,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Descargar ZIP Button */}
           <a
-            href="/ansama-comparador-completo.zip"
+            href={zipUrl}
             download="ansama-comparador-completo.zip"
             className="flex items-center gap-1.5 text-xs text-zinc-200 hover:text-white bg-zinc-900 hover:bg-zinc-800 px-3 py-2 rounded-xl transition border border-zinc-700 cursor-pointer font-bold active:scale-95"
             title="Descargar el proyecto completo en archivo ZIP"
@@ -159,7 +163,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Manual de Usuario PDF */}
           <a
-            href="/manual-usuario-ansama.pdf"
+            href={pdfUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-xs text-zinc-200 hover:text-white bg-zinc-900 hover:bg-zinc-800 px-3 py-2 rounded-xl transition border border-zinc-700 cursor-pointer font-bold active:scale-95"
