@@ -1,5 +1,5 @@
 import React from 'react';
-import { RotateCcw, Zap, History, FilePlus, Sparkles, Smartphone, Download, FileText } from 'lucide-react';
+import { RotateCcw, Zap, History, FilePlus, Sparkles, Smartphone, FileText } from 'lucide-react';
 import { Logo } from './Logo';
 import { PWAInstallButton } from './PWAInstallButton';
 import { ComparisonSummary } from '../types';
@@ -11,6 +11,7 @@ interface HeaderProps {
   onOpenHistory: () => void;
   onOpenResetModal: () => void;
   onOpenMobilePreview?: () => void;
+  onOpenManual?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -19,12 +20,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenHistory,
   onOpenResetModal,
   onOpenMobilePreview,
+  onOpenManual,
 }) => {
   const cheapestResult = summary.results.find((r) => r.tariffId === summary.cheapestTariffId);
-  const rawBase = import.meta.env.BASE_URL || './';
-  const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
-  const zipUrl = `${base}ansama-comparador-completo.zip`;
-  const pdfUrl = `${base}manual-usuario-ansama.pdf`;
 
   return (
     <header className="w-full bg-[#0a0a0c] text-white shadow-xl border-b-2 border-red-600 sticky top-0 z-30">
@@ -63,25 +61,17 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            <a
-              href={zipUrl}
-              download="ansama-comparador-completo.zip"
-              className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95"
-              title="Descargar el proyecto completo en archivo ZIP"
-            >
-              <Download className="w-3.5 h-3.5 text-red-500" />
-              <span>ZIP</span>
-            </a>
-
-            <a
-              href={pdfUrl}
-              download="manual-usuario-ansama.pdf"
-              className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95"
-              title="Descargar Manual de Usuario en PDF"
-            >
-              <FileText className="w-3.5 h-3.5 text-red-500" />
-              <span>PDF</span>
-            </a>
+            {onOpenManual && (
+              <button
+                type="button"
+                onClick={onOpenManual}
+                className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95 cursor-pointer"
+                title="Consultar Manual de Usuario en pantalla"
+              >
+                <FileText className="w-3.5 h-3.5 text-red-500" />
+                <span>Manual</span>
+              </button>
+            )}
 
             <button
               type="button"
@@ -149,27 +139,18 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* Descargar ZIP Button */}
-          <a
-            href={zipUrl}
-            download="ansama-comparador-completo.zip"
-            className="flex items-center gap-1.5 text-xs text-zinc-200 hover:text-white bg-zinc-900 hover:bg-zinc-800 px-3 py-2 rounded-xl transition border border-zinc-700 cursor-pointer font-bold active:scale-95"
-            title="Descargar el proyecto completo en archivo ZIP"
-          >
-            <Download className="w-4 h-4 text-red-500" />
-            <span>Descargar ZIP</span>
-          </a>
-
           {/* Manual de Usuario PDF */}
-          <a
-            href={pdfUrl}
-            download="manual-usuario-ansama.pdf"
-            className="flex items-center gap-1.5 text-xs text-zinc-200 hover:text-white bg-zinc-900 hover:bg-zinc-800 px-3 py-2 rounded-xl transition border border-zinc-700 cursor-pointer font-bold active:scale-95"
-            title="Descargar el Manual de Usuario en formato PDF"
-          >
-            <FileText className="w-4 h-4 text-red-500" />
-            <span>Manual PDF</span>
-          </a>
+          {onOpenManual && (
+            <button
+              type="button"
+              onClick={onOpenManual}
+              className="flex items-center gap-1.5 text-xs text-zinc-200 hover:text-white bg-zinc-900 hover:bg-zinc-800 px-3 py-2 rounded-xl transition border border-zinc-700 cursor-pointer font-bold active:scale-95"
+              title="Consultar el Manual de Usuario en pantalla"
+            >
+              <FileText className="w-4 h-4 text-red-500" />
+              <span>Manual PDF</span>
+            </button>
+          )}
 
           {/* Historial Button */}
           <button

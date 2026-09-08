@@ -14,6 +14,7 @@ import { HistoryModal } from './components/HistoryModal';
 import { SaveComparisonModal } from './components/SaveComparisonModal';
 import { ResetOptionsModal } from './components/ResetOptionsModal';
 import { MobilePreviewModal } from './components/MobilePreviewModal';
+import { ManualModal } from './components/ManualModal';
 
 const STORAGE_KEYS = {
   INPUTS: 'ansama_bill_inputs_v3',
@@ -110,6 +111,11 @@ export default function App() {
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
+  const [isManualOpen, setIsManualOpen] = useState(false);
+
+  const rawBase = import.meta.env.BASE_URL || './';
+  const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+  const pdfUrl = `${base}manual-usuario-ansama.pdf`;
 
   // Persist state to localStorage on changes
   useEffect(() => {
@@ -213,6 +219,7 @@ export default function App() {
         onOpenHistory={() => setIsHistoryOpen(true)}
         onOpenResetModal={() => setIsResetModalOpen(true)}
         onOpenMobilePreview={() => setIsMobilePreviewOpen(true)}
+        onOpenManual={() => setIsManualOpen(true)}
       />
 
       {/* Main Layout Area */}
@@ -333,6 +340,13 @@ export default function App() {
           setIsMobilePreviewOpen(false);
           setIsHistoryOpen(true);
         }}
+      />
+
+      {/* Manual de Usuario Modal */}
+      <ManualModal
+        isOpen={isManualOpen}
+        onClose={() => setIsManualOpen(false)}
+        pdfUrl={pdfUrl}
       />
 
       {/* Offline Status Badge */}
