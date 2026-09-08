@@ -1,5 +1,5 @@
 import React from 'react';
-import { RotateCcw, Zap, History, FilePlus, Sparkles, Smartphone } from 'lucide-react';
+import { RotateCcw, Zap, History, FilePlus, Sparkles, Smartphone, Download, FileText } from 'lucide-react';
 import { Logo } from './Logo';
 import { PWAInstallButton } from './PWAInstallButton';
 import { ComparisonSummary } from '../types';
@@ -58,6 +58,27 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Móvil</span>
               </button>
             )}
+
+            <a
+              href="/ansama-comparador-completo.zip"
+              download="ansama-comparador-completo.zip"
+              className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95"
+              title="Descargar el proyecto completo en archivo ZIP"
+            >
+              <Download className="w-3.5 h-3.5 text-red-500" />
+              <span>ZIP</span>
+            </a>
+
+            <a
+              href="/manual-usuario-ansama.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95"
+              title="Abrir o descargar Manual de Usuario en PDF"
+            >
+              <FileText className="w-3.5 h-3.5 text-red-500" />
+              <span>PDF</span>
+            </a>
 
             <button
               type="button"
@@ -124,6 +145,29 @@ export const Header: React.FC<HeaderProps> = ({
               <span>Ver Móvil</span>
             </button>
           )}
+
+          {/* Descargar ZIP Button */}
+          <a
+            href="/ansama-comparador-completo.zip"
+            download="ansama-comparador-completo.zip"
+            className="flex items-center gap-1.5 text-xs text-zinc-200 hover:text-white bg-zinc-900 hover:bg-zinc-800 px-3 py-2 rounded-xl transition border border-zinc-700 cursor-pointer font-bold active:scale-95"
+            title="Descargar el proyecto completo en archivo ZIP"
+          >
+            <Download className="w-4 h-4 text-red-500" />
+            <span>Descargar ZIP</span>
+          </a>
+
+          {/* Manual de Usuario PDF */}
+          <a
+            href="/manual-usuario-ansama.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs text-zinc-200 hover:text-white bg-zinc-900 hover:bg-zinc-800 px-3 py-2 rounded-xl transition border border-zinc-700 cursor-pointer font-bold active:scale-95"
+            title="Abrir o descargar el Manual de Usuario en formato PDF"
+          >
+            <FileText className="w-4 h-4 text-red-500" />
+            <span>Manual PDF</span>
+          </a>
 
           {/* Historial Button */}
           <button
