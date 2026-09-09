@@ -1,5 +1,5 @@
 import React from 'react';
-import { RotateCcw, Zap, History, FilePlus, Sparkles, Smartphone, FileText } from 'lucide-react';
+import { RotateCcw, Zap, History, FilePlus, Sparkles, Smartphone, FileText, RefreshCw } from 'lucide-react';
 import { Logo } from './Logo';
 import { PWAInstallButton } from './PWAInstallButton';
 import { ComparisonSummary } from '../types';
@@ -12,6 +12,9 @@ interface HeaderProps {
   onOpenResetModal: () => void;
   onOpenMobilePreview?: () => void;
   onOpenManual?: () => void;
+  hasUpdate?: boolean;
+  isCheckingUpdate?: boolean;
+  onCheckOrApplyUpdate?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -21,6 +24,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenResetModal,
   onOpenMobilePreview,
   onOpenManual,
+  hasUpdate = false,
+  isCheckingUpdate = false,
+  onCheckOrApplyUpdate,
 }) => {
   const cheapestResult = summary.results.find((r) => r.tariffId === summary.cheapestTariffId);
 
@@ -58,6 +64,34 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Smartphone className="w-3.5 h-3.5 text-red-500" />
                 <span>Móvil</span>
+              </button>
+            )}
+
+            {onCheckOrApplyUpdate && (
+              <button
+                type="button"
+                onClick={onCheckOrApplyUpdate}
+                disabled={isCheckingUpdate}
+                className={`relative flex items-center gap-1 text-xs px-2 py-1.5 rounded-lg border font-bold active:scale-95 cursor-pointer transition ${
+                  hasUpdate
+                    ? 'bg-red-600 text-white border-red-500 shadow-md shadow-red-600/40 animate-pulse'
+                    : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border-zinc-700'
+                }`}
+                title={
+                  hasUpdate
+                    ? '¡Hay una nueva versión disponible! Pulsa para actualizar ahora'
+                    : 'Comprobar actualizaciones'
+                }
+              >
+                <RefreshCw
+                  className={`w-3.5 h-3.5 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
+                    isCheckingUpdate ? 'animate-spin' : ''
+                  }`}
+                />
+                <span>{hasUpdate ? 'Actualizar' : 'Actualizar'}</span>
+                {hasUpdate && (
+                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full animate-ping" />
+                )}
               </button>
             )}
 
@@ -136,6 +170,40 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Smartphone className="w-4 h-4 text-red-500" />
               <span>Ver Móvil</span>
+            </button>
+          )}
+
+          {/* Botón de Actualizar / Comprobar Actualizaciones */}
+          {onCheckOrApplyUpdate && (
+            <button
+              type="button"
+              onClick={onCheckOrApplyUpdate}
+              disabled={isCheckingUpdate}
+              className={`relative flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl transition border cursor-pointer font-bold active:scale-95 ${
+                hasUpdate
+                  ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white border-red-500 shadow-lg shadow-red-600/40 animate-pulse'
+                  : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-200 hover:text-white border-zinc-700'
+              }`}
+              title={
+                hasUpdate
+                  ? '¡Hay una nueva versión disponible! Haz clic para actualizar ahora'
+                  : 'Comprobar si hay nuevas actualizaciones'
+              }
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
+                  isCheckingUpdate ? 'animate-spin' : ''
+                }`}
+              />
+              <span>{hasUpdate ? '¡Actualizar app!' : 'Actualizar'}</span>
+              {hasUpdate && (
+                <>
+                  <span className="bg-yellow-400 text-black text-[10px] px-1.5 py-0.2 rounded-full font-black ml-0.5">
+                    Nuevo
+                  </span>
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+                </>
+              )}
             </button>
           )}
 

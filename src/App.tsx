@@ -15,6 +15,8 @@ import { SaveComparisonModal } from './components/SaveComparisonModal';
 import { ResetOptionsModal } from './components/ResetOptionsModal';
 import { MobilePreviewModal } from './components/MobilePreviewModal';
 import { ManualModal } from './components/ManualModal';
+import { UpdateNotification } from './components/UpdateNotification';
+import { useAppUpdate } from './hooks/useAppUpdate';
 
 const STORAGE_KEYS = {
   INPUTS: 'ansama_bill_inputs_v3',
@@ -112,6 +114,17 @@ export default function App() {
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [isManualOpen, setIsManualOpen] = useState(false);
+
+  // App Update Hook
+  const {
+    hasUpdate,
+    isChecking: isCheckingUpdate,
+    statusMessage: updateStatusMessage,
+    isDismissed: isUpdateDismissed,
+    checkForUpdates,
+    applyUpdate,
+    dismissUpdate,
+  } = useAppUpdate();
 
   const rawBase = import.meta.env.BASE_URL || './';
   const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
@@ -220,6 +233,15 @@ export default function App() {
         onOpenResetModal={() => setIsResetModalOpen(true)}
         onOpenMobilePreview={() => setIsMobilePreviewOpen(true)}
         onOpenManual={() => setIsManualOpen(true)}
+        hasUpdate={hasUpdate}
+        isCheckingUpdate={isCheckingUpdate}
+        onCheckOrApplyUpdate={() => {
+          if (hasUpdate) {
+            applyUpdate();
+          } else {
+            checkForUpdates(true);
+          }
+        }}
       />
 
       {/* Main Layout Area */}
@@ -351,6 +373,16 @@ export default function App() {
 
       {/* Offline Status Badge */}
       <OfflineIndicator />
+
+      {/* Floating Update Notification Toast/Banner */}
+      <UpdateNotification
+        hasUpdate={hasUpdate}
+        isDismissed={isUpdateDismissed}
+        statusMessage={updateStatusMessage}
+        isChecking={isCheckingUpdate}
+        onApplyUpdate={applyUpdate}
+        onDismiss={dismissUpdate}
+      />
     </div>
   );
 }

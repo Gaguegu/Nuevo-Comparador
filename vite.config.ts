@@ -7,12 +7,21 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig(() => {
   return {
     base: './', // <-- Añadido para que el móvil encuentre los archivos visuales
+    define: {
+      __APP_BUILD_TIME__: Date.now(),
+      __APP_VERSION__: JSON.stringify('2.2.0'),
+    },
     plugins: [
       react(),
       tailwindcss(),
       VitePWA({
-        registerType: 'autoUpdate',
-        includeAssets: ['icon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
+        registerType: 'prompt',
+        includeAssets: ['icon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png', 'manual-usuario-ansama.pdf'],
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,pdf}'],
+          globIgnores: ['**/version.json'],
+          cleanupOutdatedCaches: true,
+        },
         manifest: {
           id: './',
           name: 'ANSAMA Comparador de Tarifas Eléctricas',
