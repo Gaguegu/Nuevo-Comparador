@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, TrendingUp, Coins, Lightbulb, CheckSquare, Sparkles } from 'lucide-react';
+import { Home, TrendingUp, Coins, Lightbulb, CheckSquare, Sparkles, RefreshCw } from 'lucide-react';
 import { ActiveTab } from '../types';
 import { Logo } from './Logo';
 
@@ -7,6 +7,9 @@ interface NavigationProps {
   activeTab: ActiveTab;
   onChangeTab: (tab: ActiveTab) => void;
   bestTariffSavings?: number;
+  hasUpdate?: boolean;
+  isCheckingUpdate?: boolean;
+  onCheckOrApplyUpdate?: () => void;
 }
 
 const NAV_ITEMS: { id: ActiveTab; label: string; icon: React.FC<{ className?: string }> }[] = [
@@ -17,7 +20,14 @@ const NAV_ITEMS: { id: ActiveTab; label: string; icon: React.FC<{ className?: st
   { id: 'resultados', label: 'Resultados', icon: CheckSquare },
 ];
 
-export const DesktopSidebar: React.FC<NavigationProps> = ({ activeTab, onChangeTab, bestTariffSavings }) => {
+export const DesktopSidebar: React.FC<NavigationProps> = ({
+  activeTab,
+  onChangeTab,
+  bestTariffSavings,
+  hasUpdate = false,
+  isCheckingUpdate = false,
+  onCheckOrApplyUpdate,
+}) => {
   return (
     <aside className="w-60 shrink-0 bg-[#0c0c0e] text-white flex flex-col justify-between p-4 shadow-2xl border-r border-zinc-800">
       <div className="space-y-3">
@@ -66,15 +76,45 @@ export const DesktopSidebar: React.FC<NavigationProps> = ({ activeTab, onChangeT
         </div>
       </div>
 
-      {/* Helpful shortcut / tip card in sidebar */}
-      <div className="bg-zinc-900/90 rounded-2xl p-3 border border-red-600/20 text-xs text-zinc-300 shadow-md">
-        <div className="flex items-center gap-2 font-bold text-white mb-1">
-          <Sparkles className="w-3.5 h-3.5 text-red-500" />
-          <span>Diseño ANSAMA</span>
+      <div className="space-y-2">
+        {/* App Version & Update Status */}
+        <div className="bg-zinc-900/90 rounded-2xl p-3 border border-zinc-800 text-xs text-zinc-300 shadow-md space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-zinc-400">Versión App</span>
+            <span className="text-[10px] font-mono bg-zinc-800 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 font-bold">
+              v2.2 PWA
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onCheckOrApplyUpdate || (() => window.location.reload())}
+            disabled={isCheckingUpdate}
+            className={`w-full flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-xs font-bold transition cursor-pointer active:scale-95 ${
+              hasUpdate
+                ? 'bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-600/40 animate-pulse'
+                : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700'
+            }`}
+            title="Buscar actualizaciones de la app o recargar"
+          >
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
+                isCheckingUpdate ? 'animate-spin' : ''
+              }`}
+            />
+            <span>{hasUpdate ? 'Actualizar ahora' : 'Buscar actualizaciones'}</span>
+          </button>
         </div>
-        <p className="text-[11px] text-zinc-400 leading-relaxed">
-          Colores corporativos en Rojo, Blanco y Negro. Optimizado para móvil y visitas a clientes.
-        </p>
+
+        {/* Helpful shortcut / tip card in sidebar */}
+        <div className="bg-zinc-900/90 rounded-2xl p-3 border border-red-600/20 text-xs text-zinc-300 shadow-md">
+          <div className="flex items-center gap-2 font-bold text-white mb-1">
+            <Sparkles className="w-3.5 h-3.5 text-red-500" />
+            <span>Diseño ANSAMA</span>
+          </div>
+          <p className="text-[11px] text-zinc-400 leading-relaxed">
+            Colores corporativos en Rojo, Blanco y Negro. Optimizado para móvil y visitas a clientes.
+          </p>
+        </div>
       </div>
     </aside>
   );

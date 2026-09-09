@@ -252,6 +252,15 @@ export default function App() {
             activeTab={activeTab}
             onChangeTab={setActiveTab}
             bestTariffSavings={summary.maxSavingsVsWorst}
+            hasUpdate={hasUpdate}
+            isCheckingUpdate={isCheckingUpdate}
+            onCheckOrApplyUpdate={() => {
+              if (hasUpdate) {
+                applyUpdate();
+              } else {
+                checkForUpdates(true);
+              }
+            }}
           />
         </div>
 

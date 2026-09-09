@@ -43,8 +43,8 @@ export const Header: React.FC<HeaderProps> = ({
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-xs tracking-widest font-black uppercase text-red-500">ANSAMA</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-300 font-semibold border border-zinc-700">
-                  v2.0 PWA
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-zinc-800 text-emerald-400 font-bold border border-emerald-500/40">
+                  v2.2 PWA
                 </span>
               </div>
               <h1 className="text-base sm:text-lg font-black tracking-tight text-white leading-tight">
@@ -67,33 +67,32 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {onCheckOrApplyUpdate && (
-              <button
-                type="button"
-                onClick={onCheckOrApplyUpdate}
-                disabled={isCheckingUpdate}
-                className={`relative flex items-center gap-1 text-xs px-2 py-1.5 rounded-lg border font-bold active:scale-95 cursor-pointer transition ${
-                  hasUpdate
-                    ? 'bg-red-600 text-white border-red-500 shadow-md shadow-red-600/40 animate-pulse'
-                    : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border-zinc-700'
+            {/* Mobile Update button */}
+            <button
+              type="button"
+              onClick={onCheckOrApplyUpdate || (() => window.location.reload())}
+              disabled={isCheckingUpdate}
+              className={`relative flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg border font-bold active:scale-95 cursor-pointer transition ${
+                hasUpdate
+                  ? 'bg-red-600 text-white border-red-500 shadow-md shadow-red-600/50 animate-pulse'
+                  : 'bg-emerald-950/70 hover:bg-emerald-900/90 text-emerald-300 border-emerald-500/60'
+              }`}
+              title={
+                hasUpdate
+                  ? '¡Hay una nueva versión disponible! Pulsa para actualizar ahora'
+                  : 'Comprobar actualizaciones'
+              }
+            >
+              <RefreshCw
+                className={`w-3.5 h-3.5 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
+                  isCheckingUpdate ? 'animate-spin' : ''
                 }`}
-                title={
-                  hasUpdate
-                    ? '¡Hay una nueva versión disponible! Pulsa para actualizar ahora'
-                    : 'Comprobar actualizaciones'
-                }
-              >
-                <RefreshCw
-                  className={`w-3.5 h-3.5 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
-                    isCheckingUpdate ? 'animate-spin' : ''
-                  }`}
-                />
-                <span>{hasUpdate ? 'Actualizar' : 'Actualizar'}</span>
-                {hasUpdate && (
-                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full animate-ping" />
-                )}
-              </button>
-            )}
+              />
+              <span>Actualizar</span>
+              {hasUpdate && (
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full animate-ping" />
+              )}
+            </button>
 
             {onOpenManual && (
               <button
@@ -174,38 +173,36 @@ export const Header: React.FC<HeaderProps> = ({
           )}
 
           {/* Botón de Actualizar / Comprobar Actualizaciones */}
-          {onCheckOrApplyUpdate && (
-            <button
-              type="button"
-              onClick={onCheckOrApplyUpdate}
-              disabled={isCheckingUpdate}
-              className={`relative flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl transition border cursor-pointer font-bold active:scale-95 ${
-                hasUpdate
-                  ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white border-red-500 shadow-lg shadow-red-600/40 animate-pulse'
-                  : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-200 hover:text-white border-zinc-700'
+          <button
+            type="button"
+            onClick={onCheckOrApplyUpdate || (() => window.location.reload())}
+            disabled={isCheckingUpdate}
+            className={`relative flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl transition border cursor-pointer font-bold active:scale-95 ${
+              hasUpdate
+                ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white border-red-500 shadow-lg shadow-red-600/50 animate-pulse'
+                : 'bg-emerald-950/70 hover:bg-emerald-900/90 text-emerald-300 hover:text-white border-emerald-500/60 shadow-sm'
+            }`}
+            title={
+              hasUpdate
+                ? '¡Hay una nueva versión disponible! Haz clic para actualizar ahora'
+                : 'Comprobar actualizaciones o recargar versión'
+            }
+          >
+            <RefreshCw
+              className={`w-4 h-4 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
+                isCheckingUpdate ? 'animate-spin' : ''
               }`}
-              title={
-                hasUpdate
-                  ? '¡Hay una nueva versión disponible! Haz clic para actualizar ahora'
-                  : 'Comprobar si hay nuevas actualizaciones'
-              }
-            >
-              <RefreshCw
-                className={`w-4 h-4 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
-                  isCheckingUpdate ? 'animate-spin' : ''
-                }`}
-              />
-              <span>{hasUpdate ? '¡Actualizar app!' : 'Actualizar'}</span>
-              {hasUpdate && (
-                <>
-                  <span className="bg-yellow-400 text-black text-[10px] px-1.5 py-0.2 rounded-full font-black ml-0.5">
-                    Nuevo
-                  </span>
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
-                </>
-              )}
-            </button>
-          )}
+            />
+            <span>{hasUpdate ? '¡Actualizar app!' : 'Actualizar'}</span>
+            {hasUpdate && (
+              <>
+                <span className="bg-yellow-400 text-black text-[10px] px-1.5 py-0.2 rounded-full font-black ml-0.5">
+                  Nuevo
+                </span>
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+              </>
+            )}
+          </button>
 
           {/* Manual de Usuario PDF */}
           {onOpenManual && (
