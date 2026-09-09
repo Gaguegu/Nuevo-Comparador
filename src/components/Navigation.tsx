@@ -12,12 +12,19 @@ interface NavigationProps {
   onCheckOrApplyUpdate?: () => void;
 }
 
-const NAV_ITEMS: { id: ActiveTab; label: string; icon: React.FC<{ className?: string }> }[] = [
-  { id: 'inicio', label: 'Inicio', icon: Home },
-  { id: 'consumo', label: 'Consumo', icon: TrendingUp },
-  { id: 'impuestos', label: 'Impuestos', icon: Coins },
-  { id: 'precio-energia', label: 'Precio Energía', icon: Lightbulb },
-  { id: 'resultados', label: 'Resultados', icon: CheckSquare },
+interface NavItemDef {
+  id: ActiveTab;
+  label: string;
+  shortLabel: string;
+  icon: React.FC<{ className?: string }>;
+}
+
+const NAV_ITEMS: NavItemDef[] = [
+  { id: 'inicio', label: 'Inicio', shortLabel: 'Inicio', icon: Home },
+  { id: 'consumo', label: 'Consumo', shortLabel: 'Consumo', icon: TrendingUp },
+  { id: 'impuestos', label: 'Impuestos', shortLabel: 'Impuestos', icon: Coins },
+  { id: 'precio-energia', label: 'Precio Energía', shortLabel: 'P. Energía', icon: Lightbulb },
+  { id: 'resultados', label: 'Resultados', shortLabel: 'Resultados', icon: CheckSquare },
 ];
 
 export const DesktopSidebar: React.FC<NavigationProps> = ({
@@ -117,10 +124,13 @@ export const DesktopSidebar: React.FC<NavigationProps> = ({
   );
 };
 
-export const MobileBottomNav: React.FC<NavigationProps> = ({ activeTab, onChangeTab, bestTariffSavings }) => {
+export const MobileBottomNav: React.FC<NavigationProps> = ({ activeTab, onChangeTab }) => {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0a0a0c] text-white border-t border-zinc-800 shadow-2xl backdrop-blur-lg pb-safe">
-      <div className="grid grid-cols-5 h-16">
+    <nav
+      className="md:hidden fixed bottom-0 inset-x-0 w-full z-50 bg-[#09090b]/98 backdrop-blur-xl border-t-2 border-red-600/70 shadow-[0_-8px_30px_rgba(0,0,0,0.7)] select-none"
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 4px)' }}
+    >
+      <div className="grid grid-cols-5 h-14 w-full max-w-full">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -129,18 +139,22 @@ export const MobileBottomNav: React.FC<NavigationProps> = ({ activeTab, onChange
               key={item.id}
               type="button"
               onClick={() => onChangeTab(item.id)}
-              className={`flex flex-col items-center justify-center relative py-1 px-0.5 transition cursor-pointer ${
-                isActive ? 'text-white font-black' : 'text-zinc-400 hover:text-zinc-200 font-medium'
+              className={`flex flex-col items-center justify-center relative py-1 px-0.5 transition cursor-pointer active:scale-95 ${
+                isActive ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               {isActive && (
-                <div className="absolute top-0 inset-x-3 h-1 bg-red-600 rounded-b-full shadow-sm shadow-red-500/50" />
+                <div className="absolute top-0 inset-x-2 h-1 bg-red-600 rounded-b-full shadow-sm shadow-red-500/80" />
               )}
               <Icon
-                className={`w-5 h-5 mb-0.5 ${isActive ? 'text-red-500 scale-110' : 'text-zinc-400'} transition-transform`}
+                className={`w-5 h-5 mb-0.5 ${isActive ? 'text-red-500 scale-105' : 'text-zinc-400'} transition-transform`}
               />
-              <span className={`text-[10px] truncate max-w-[62px] leading-tight ${isActive ? 'text-white font-bold' : 'text-zinc-400'}`}>
-                {item.label}
+              <span
+                className={`text-[9.5px] sm:text-[10px] truncate max-w-full leading-tight text-center px-0.5 ${
+                  isActive ? 'text-white font-black' : 'text-zinc-400 font-medium'
+                }`}
+              >
+                {item.shortLabel || item.label}
               </span>
             </button>
           );

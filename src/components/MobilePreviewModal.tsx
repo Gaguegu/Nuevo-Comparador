@@ -228,7 +228,7 @@ export const MobilePreviewModal: React.FC<MobilePreviewModalProps> = ({
                 </div>
 
                 {/* Inner Screen Area */}
-                <div className="flex-1 bg-zinc-100 rounded-[38px] overflow-hidden flex flex-col relative">
+                <div className="flex-1 bg-zinc-100 rounded-[38px] overflow-hidden flex flex-col relative [transform:translateZ(0)]">
                   {/* Top Mobile Bar */}
                   <div className="bg-zinc-950 text-white px-3.5 py-2.5 flex items-center justify-between border-b border-zinc-800 shrink-0">
                     <div className="flex items-center gap-2">

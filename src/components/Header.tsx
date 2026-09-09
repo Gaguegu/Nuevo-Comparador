@@ -33,11 +33,11 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="w-full bg-[#0a0a0c] text-white shadow-xl border-b-2 border-red-600 sticky top-0 z-30">
       {/* Top Banner with ANSAMA Logo and Identity */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-3 flex flex-col md:flex-row items-center justify-between gap-2.5">
         {/* Logo and App Title */}
-        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
-          <div className="flex items-center gap-3">
-            <div className="p-1 bg-white rounded-xl shadow-md border border-red-500/30 flex items-center justify-center">
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <div className="flex items-center gap-2.5">
+            <div className="p-1 bg-white rounded-xl shadow-md border border-red-500/30 flex items-center justify-center shrink-0">
               <Logo size="sm" />
             </div>
             <div>
@@ -47,48 +47,50 @@ export const Header: React.FC<HeaderProps> = ({
                   v2.2 PWA
                 </span>
               </div>
-              <h1 className="text-base sm:text-lg font-black tracking-tight text-white leading-tight">
+              <h1 className="text-sm sm:text-base md:text-lg font-black tracking-tight text-white leading-tight">
                 Comparador Eléctrico
               </h1>
             </div>
           </div>
 
-          {/* Mobile Install button & Quick actions */}
-          <div className="flex items-center gap-1.5 md:hidden">
+          <div className="md:hidden flex items-center gap-1 shrink-0">
+            <PWAInstallButton />
+          </div>
+        </div>
+
+        {/* Mobile Action Buttons Bar (2 Líneas ordenadas adaptadas 100% al ancho del móvil) */}
+        <div className="w-full md:hidden pt-1.5 border-t border-zinc-800/80 space-y-1.5">
+          {/* Línea 1 de botones móviles: Ver Móvil, Actualizar, Manual PDF */}
+          <div className="grid grid-cols-3 gap-1.5 w-full">
             {onOpenMobilePreview && (
               <button
                 type="button"
                 onClick={onOpenMobilePreview}
-                className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95"
-                title="Ver pantallas y simulador móvil"
+                className="flex items-center justify-center gap-1 text-[11px] text-zinc-200 bg-zinc-900 hover:bg-zinc-800 py-2 px-1 rounded-xl border border-zinc-700 font-bold active:scale-95 shadow-sm cursor-pointer"
+                title="Simulador de móvil y código QR"
               >
-                <Smartphone className="w-3.5 h-3.5 text-red-500" />
-                <span>Móvil</span>
+                <Smartphone className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                <span className="truncate">Ver Móvil</span>
               </button>
             )}
 
-            {/* Mobile Update button */}
             <button
               type="button"
               onClick={onCheckOrApplyUpdate || (() => window.location.reload())}
               disabled={isCheckingUpdate}
-              className={`relative flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg border font-bold active:scale-95 cursor-pointer transition ${
+              className={`relative flex items-center justify-center gap-1 text-[11px] py-2 px-1 rounded-xl border font-bold active:scale-95 cursor-pointer transition shadow-sm ${
                 hasUpdate
                   ? 'bg-red-600 text-white border-red-500 shadow-md shadow-red-600/50 animate-pulse'
-                  : 'bg-emerald-950/70 hover:bg-emerald-900/90 text-emerald-300 border-emerald-500/60'
+                  : 'bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border-emerald-500/60'
               }`}
-              title={
-                hasUpdate
-                  ? '¡Hay una nueva versión disponible! Pulsa para actualizar ahora'
-                  : 'Comprobar actualizaciones'
-              }
+              title="Buscar actualizaciones o recargar versión"
             >
               <RefreshCw
-                className={`w-3.5 h-3.5 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
+                className={`w-3.5 h-3.5 shrink-0 ${hasUpdate ? 'text-white' : 'text-emerald-400'} ${
                   isCheckingUpdate ? 'animate-spin' : ''
                 }`}
               />
-              <span>Actualizar</span>
+              <span className="truncate">{hasUpdate ? '¡Actualizar!' : 'Actualizar'}</span>
               {hasUpdate && (
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full animate-ping" />
               )}
@@ -98,24 +100,27 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={onOpenManual}
-                className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95 cursor-pointer"
-                title="Consultar Manual de Usuario en pantalla"
+                className="flex items-center justify-center gap-1 text-[11px] text-zinc-200 bg-zinc-900 hover:bg-zinc-800 py-2 px-1 rounded-xl border border-zinc-700 font-bold active:scale-95 shadow-sm cursor-pointer"
+                title="Consultar Manual de Usuario"
               >
-                <FileText className="w-3.5 h-3.5 text-red-500" />
-                <span>Manual</span>
+                <FileText className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                <span className="truncate">Manual</span>
               </button>
             )}
+          </div>
 
+          {/* Línea 2 de botones móviles: Historial y Nueva / Poner a cero */}
+          <div className="grid grid-cols-2 gap-1.5 w-full">
             <button
               type="button"
               onClick={onOpenHistory}
-              className="flex items-center gap-1 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 px-2.5 py-1.5 rounded-lg border border-zinc-700 font-bold active:scale-95"
-              title="Ver Historial de comparativas"
+              className="flex items-center justify-center gap-1.5 text-xs text-zinc-200 bg-zinc-900 hover:bg-zinc-800 py-2 px-2 rounded-xl border border-zinc-700 font-bold active:scale-95 shadow-sm cursor-pointer"
+              title="Ver Historial de comparativas guardadas"
             >
-              <History className="w-3.5 h-3.5 text-red-400" />
-              <span>Historial</span>
+              <History className="w-3.5 h-3.5 text-red-400 shrink-0" />
+              <span className="truncate">Historial</span>
               {savedCount > 0 && (
-                <span className="ml-0.5 bg-red-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black">
+                <span className="bg-red-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black ml-0.5">
                   {savedCount}
                 </span>
               )}
@@ -124,19 +129,17 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={onOpenResetModal}
-              className="flex items-center gap-1 text-xs text-white bg-red-600 hover:bg-red-700 px-2.5 py-1.5 rounded-lg font-black active:scale-95 shadow-sm"
+              className="flex items-center justify-center gap-1.5 text-xs text-white bg-red-600 hover:bg-red-700 py-2 px-2 rounded-xl font-black active:scale-95 shadow-sm shadow-red-600/30 cursor-pointer"
               title="Nueva comparativa o poner a cero"
             >
-              <FilePlus className="w-3.5 h-3.5" />
-              <span>Nuevo</span>
+              <FilePlus className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Nueva / Poner a cero</span>
             </button>
-
-            <PWAInstallButton />
           </div>
         </div>
 
-        {/* Central Banner matching ANSAMA Red, Black and White */}
-        <div className="w-full md:flex-1 md:max-w-xl bg-gradient-to-r from-zinc-900 via-black to-zinc-900 rounded-xl px-4 py-2 text-center shadow-lg border border-red-600/50">
+        {/* Central Banner matching ANSAMA Red, Black and White (Visible en tablet y desktop) */}
+        <div className="hidden sm:block w-full md:flex-1 md:max-w-xl bg-gradient-to-r from-zinc-900 via-black to-zinc-900 rounded-xl px-4 py-2 text-center shadow-lg border border-red-600/50">
           <h2 className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-white drop-shadow font-serif flex items-center justify-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <span>Calculadora Comparativa de Tarifas Eléctricas</span>

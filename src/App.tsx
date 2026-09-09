@@ -224,7 +224,7 @@ export default function App() {
   }, [tariffs, inputs, taxes]);
 
   return (
-    <div className="min-h-screen bg-[#f4f4f7] text-zinc-900 flex flex-col font-sans selection:bg-red-200 selection:text-red-950">
+    <div className="min-h-[100dvh] w-full max-w-full overflow-x-hidden bg-[#f4f4f7] text-zinc-900 flex flex-col font-sans selection:bg-red-200 selection:text-red-950">
       {/* Top Header */}
       <Header
         summary={summary}
@@ -245,7 +245,7 @@ export default function App() {
       />
 
       {/* Main Layout Area */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden w-full max-w-full">
         {/* Desktop Sidebar (Left) */}
         <div className="hidden md:flex">
           <DesktopSidebar
@@ -265,7 +265,7 @@ export default function App() {
         </div>
 
         {/* View Content Area */}
-        <main className="flex-1 overflow-y-auto p-3 sm:p-6 pb-24 md:pb-8">
+        <main className="flex-1 overflow-y-auto p-2.5 sm:p-6 pb-28 md:pb-8 w-full max-w-full">
           {activeTab === 'inicio' && (
             <InicioView
               inputs={inputs}
