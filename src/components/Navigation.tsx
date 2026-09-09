@@ -67,9 +67,6 @@ export const DesktopSidebar: React.FC<NavigationProps> = ({
               >
                 <Icon className={`w-4 h-4 ${isActive ? 'text-red-600' : 'text-zinc-400'}`} />
                 <span className="flex-1">{item.label}</span>
-                {item.id === 'resultados' && bestTariffSavings && bestTariffSavings > 0 ? (
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                ) : null}
               </button>
             );
           })}
@@ -145,9 +142,6 @@ export const MobileBottomNav: React.FC<NavigationProps> = ({ activeTab, onChange
               <span className={`text-[10px] truncate max-w-[62px] leading-tight ${isActive ? 'text-white font-bold' : 'text-zinc-400'}`}>
                 {item.label}
               </span>
-              {item.id === 'resultados' && bestTariffSavings && bestTariffSavings > 0 ? (
-                <span className="absolute top-2 right-4 w-2 h-2 rounded-full bg-red-500" />
-              ) : null}
             </button>
           );
         })}
