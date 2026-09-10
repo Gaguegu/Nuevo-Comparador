@@ -295,17 +295,6 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
               </button>
             );
           })}
-
-          {tariffs.length < MAX_TARIFFS && (
-            <button
-              type="button"
-              onClick={handleAddTariff}
-              className="shrink-0 px-3 py-2 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 transition flex items-center gap-1 shadow-2xs"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Añadir</span>
-            </button>
-          )}
         </div>
       </div>
 
