@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Smartphone,
   X,
@@ -59,6 +59,14 @@ export const MobilePreviewModal: React.FC<MobilePreviewModalProps> = ({
 }) => {
   const [modalMode, setModalMode] = useState<'interactive' | 'renders' | 'qrcode'>('interactive');
   const [copiedUrl, setCopiedUrl] = useState(false);
+  const simulatorScrollRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (simulatorScrollRef.current) {
+      simulatorScrollRef.current.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      simulatorScrollRef.current.scrollTop = 0;
+    }
+  }, [activeTab]);
 
   if (!isOpen) return null;
 
@@ -245,7 +253,7 @@ export const MobilePreviewModal: React.FC<MobilePreviewModalProps> = ({
                   </div>
 
                   {/* Scrollable View Content */}
-                  <div className="flex-1 overflow-y-auto p-3 space-y-3 pb-20">
+                  <div ref={simulatorScrollRef} className="flex-1 overflow-y-auto p-3 space-y-3 pb-20">
                     {activeTab === 'inicio' && (
                       <InicioView inputs={inputs} summary={summary} onChangeTab={onChangeTab} />
                     )}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { ActiveTab, BillInputs, TaxesConfig, Tariff, SavedComparison } from './types';
 import { DEFAULT_BILL_INPUTS, DEFAULT_TAXES, DEFAULT_TARIFFS } from './data/defaultData';
 import { compareTariffs } from './utils/calculator';
@@ -129,6 +129,26 @@ export default function App() {
   const rawBase = import.meta.env.BASE_URL || './';
   const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
   const pdfUrl = `${base}manual-usuario-ansama.pdf`;
+
+  // Scroll to top of the screen whenever switching views/tabs
+  const mainContentRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const scrollToTop = () => {
+      if (mainContentRef.current) {
+        mainContentRef.current.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        mainContentRef.current.scrollTop = 0;
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    scrollToTop();
+    // Ensure that if content changes size during render, it resets to the top
+    const frameId = requestAnimationFrame(scrollToTop);
+    return () => cancelAnimationFrame(frameId);
+  }, [activeTab]);
 
   // Persist state to localStorage on changes
   useEffect(() => {
@@ -265,7 +285,7 @@ export default function App() {
         </div>
 
         {/* View Content Area */}
-        <main className="flex-1 overflow-y-auto p-2.5 sm:p-6 pb-28 md:pb-8 w-full max-w-full">
+        <main ref={mainContentRef} className="flex-1 overflow-y-auto p-2.5 sm:p-6 pb-28 md:pb-8 w-full max-w-full">
           {activeTab === 'inicio' && (
             <InicioView
               inputs={inputs}
