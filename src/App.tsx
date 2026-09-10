@@ -17,6 +17,7 @@ import { MobilePreviewModal } from './components/MobilePreviewModal';
 import { ManualModal } from './components/ManualModal';
 import { UpdateNotification } from './components/UpdateNotification';
 import { useAppUpdate } from './hooks/useAppUpdate';
+import { setupEnterKeyNavigation } from './utils/keyboardNavigation';
 
 const STORAGE_KEYS = {
   INPUTS: 'ansama_bill_inputs_v3',
@@ -149,6 +150,11 @@ export default function App() {
     const frameId = requestAnimationFrame(scrollToTop);
     return () => cancelAnimationFrame(frameId);
   }, [activeTab]);
+
+  // Global Excel-style Enter key navigation between input fields
+  useEffect(() => {
+    return setupEnterKeyNavigation();
+  }, []);
 
   // Persist state to localStorage on changes
   useEffect(() => {

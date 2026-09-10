@@ -681,7 +681,7 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                     { key: 'p5', label: 'P5' },
                     { key: 'p6', label: 'P6' },
                   ] as const
-                ).map((p) => {
+                ).map((p, pIdx) => {
                   const kwVal = inputs.potencia[p.key] || 0;
                   return (
                     <tr key={p.key} className="hover:bg-slate-50 transition">
@@ -703,6 +703,9 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                                 onChange={(val) =>
                                   handleUpdatePrice(t.id, 'potencia', p.key, val)
                                 }
+                                data-tariff-id={t.id}
+                                data-table-section="potencia"
+                                data-period-idx={pIdx}
                                 className="w-32 sm:w-34 text-center font-mono text-xs font-bold"
                               />
                             </td>
@@ -782,7 +785,7 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                     { key: 'p5', label: 'P5' },
                     { key: 'p6', label: 'P6' },
                   ] as const
-                ).map((p) => {
+                ).map((p, pIdx) => {
                   const kwhVal = inputs.consumo[p.key] || 0;
                   return (
                     <tr key={p.key} className="hover:bg-slate-50 transition">
@@ -804,6 +807,9 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                                 onChange={(val) =>
                                   handleUpdatePrice(t.id, 'energia', p.key, val)
                                 }
+                                data-tariff-id={t.id}
+                                data-table-section="energia"
+                                data-period-idx={pIdx}
                                 className="w-32 sm:w-34 text-center font-mono text-xs font-bold"
                               />
                             </td>

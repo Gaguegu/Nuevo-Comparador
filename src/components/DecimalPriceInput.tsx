@@ -8,6 +8,9 @@ interface DecimalPriceInputProps {
   className?: string;
   ariaLabel?: string;
   disabled?: boolean;
+  'data-tariff-id'?: string;
+  'data-table-section'?: string;
+  'data-period-idx'?: number;
 }
 
 /**
@@ -26,6 +29,9 @@ export const DecimalPriceInput: React.FC<DecimalPriceInputProps> = ({
   className = '',
   ariaLabel,
   disabled = false,
+  'data-tariff-id': dataTariffId,
+  'data-table-section': dataTableSection,
+  'data-period-idx': dataPeriodIdx,
 }) => {
   // Local string state to allow natural typing of '0,' or '0.000'
   const [text, setText] = useState<string>(() => {
@@ -113,6 +119,9 @@ export const DecimalPriceInput: React.FC<DecimalPriceInputProps> = ({
       onFocus={handleFocus}
       onBlur={handleBlur}
       aria-label={ariaLabel}
+      data-tariff-id={dataTariffId}
+      data-table-section={dataTableSection}
+      data-period-idx={dataPeriodIdx}
       className={`font-mono text-sm font-bold text-slate-900 bg-white border-2 border-slate-300 rounded-xl px-2.5 py-1.5 text-center focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition w-36 min-w-[130px] placeholder:text-slate-400 placeholder:font-normal ${className}`}
     />
   );
