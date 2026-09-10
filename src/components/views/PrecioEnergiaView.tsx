@@ -108,10 +108,18 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
       alert('Debe haber al menos 1 comercializadora para poder comparar.');
       return;
     }
+    const target = tariffs.find((t) => t.id === tariffId);
+    const targetName = target ? target.name || 'esta comercializadora' : 'esta comercializadora';
+    if (!window.confirm(`¿Estás seguro de que deseas eliminar la comercializadora "${targetName}"? Esta acción no se puede deshacer.`)) {
+      return;
+    }
     const filtered = tariffs.filter((t) => t.id !== tariffId);
     onChangeTariffs(filtered);
     if (selectedMobileIndex >= filtered.length) {
       setSelectedMobileIndex(Math.max(0, filtered.length - 1));
+    }
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(20);
     }
   };
 
