@@ -201,6 +201,25 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
     }
   };
 
+  const handleResetSingleTariffPrices = (tariffId: string) => {
+    const target = tariffs.find((t) => t.id === tariffId);
+    const targetName = target ? target.name || 'esta comercializadora' : 'esta comercializadora';
+    if (window.confirm(`¿Deseas poner a cero (0,000000) los precios de potencia y energía de "${targetName}"? Se mantendrá el nombre.`)) {
+      const updated = tariffs.map((t) => {
+        if (t.id !== tariffId) return t;
+        return {
+          ...t,
+          potenciaPrices: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0 },
+          energiaPrices: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0 },
+        };
+      });
+      onChangeTariffs(updated);
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate(20);
+      }
+    }
+  };
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* ANSAMA Brand Top Banner with Logo */}
@@ -325,21 +344,21 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                 />
               </div>
 
-              {/* Botones de acción móvil: Añadir, Copiar y Borrar (Distribución perfecta en 3 columnas al 100% de ancho) */}
-              <div className="grid grid-cols-3 gap-2 pt-0.5 w-full">
+              {/* Botones de acción móvil: Añadir, Copiar, A cero y Borrar (Distribución perfecta en 4 columnas al 100% de ancho) */}
+              <div className="grid grid-cols-4 gap-1.5 pt-0.5 w-full">
                 {/* Botón Añadir */}
                 <button
                   type="button"
                   onClick={handleAddTariff}
                   disabled={tariffs.length >= MAX_TARIFFS}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
+                  className={`flex items-center justify-center gap-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
                     tariffs.length < MAX_TARIFFS
                       ? 'bg-emerald-700 hover:bg-emerald-800 text-white border border-emerald-600 shadow-emerald-950/20'
                       : 'bg-amber-300/60 text-amber-950/50 border border-amber-400/50 cursor-not-allowed'
                   }`}
                   title={tariffs.length < MAX_TARIFFS ? "Añadir nueva comercializadora" : `Máximo ${MAX_TARIFFS} comercializadoras`}
                 >
-                  <Plus className="w-4 h-4 shrink-0" />
+                  <Plus className="w-3.5 h-3.5 shrink-0" />
                   <span className="truncate">Añadir</span>
                 </button>
 
@@ -348,15 +367,26 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                   type="button"
                   onClick={() => handleDuplicateTariff(currentMobileTariff)}
                   disabled={tariffs.length >= MAX_TARIFFS}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
+                  className={`flex items-center justify-center gap-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
                     tariffs.length < MAX_TARIFFS
                       ? 'bg-amber-100 hover:bg-white text-slate-900 border border-amber-600/40'
                       : 'bg-amber-300/60 text-amber-950/50 border border-amber-400/50 cursor-not-allowed'
                   }`}
                   title="Duplicar esta comercializadora con todos sus precios"
                 >
-                  <Copy className="w-4 h-4 shrink-0 text-slate-800" />
+                  <Copy className="w-3.5 h-3.5 shrink-0 text-slate-800" />
                   <span className="truncate">Copiar</span>
+                </button>
+
+                {/* Botón A cero (solo precios, conserva el nombre) */}
+                <button
+                  type="button"
+                  onClick={() => handleResetSingleTariffPrices(currentMobileTariff.id)}
+                  className="flex items-center justify-center gap-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 transition shadow-sm active:scale-95 cursor-pointer"
+                  title="Poner a cero (0,000000) todos los precios de esta comercializadora sin borrar el nombre"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 shrink-0 text-blue-700" />
+                  <span className="truncate">A cero</span>
                 </button>
 
                 {/* Botón Borrar */}
@@ -364,14 +394,14 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                   type="button"
                   onClick={() => handleDeleteTariff(currentMobileTariff.id)}
                   disabled={tariffs.length <= 1}
-                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
+                  className={`flex items-center justify-center gap-1 py-2.5 px-1 rounded-xl text-[11px] sm:text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
                     tariffs.length > 1
                       ? 'bg-red-600 hover:bg-red-700 text-white border border-red-700 shadow-red-950/20'
                       : 'bg-amber-300/60 text-amber-950/40 border border-amber-400/40 cursor-not-allowed'
                   }`}
                   title={tariffs.length > 1 ? "Eliminar esta comercializadora" : "Debe haber al menos 1 comercializadora"}
                 >
-                  <Trash2 className="w-4 h-4 shrink-0" />
+                  <Trash2 className="w-3.5 h-3.5 shrink-0" />
                   <span className="truncate">Borrar</span>
                 </button>
               </div>
@@ -588,9 +618,17 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                             type="button"
                             onClick={() => handleDuplicateTariff(t)}
                             className="p-1 hover:bg-amber-300 rounded text-slate-700"
-                            title="Duplicar"
+                            title="Duplicar comercializadora"
                           >
                             <Copy className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleResetSingleTariffPrices(t.id)}
+                            className="p-1 hover:bg-amber-300 rounded text-blue-800"
+                            title="Poner a cero los precios de esta comercializadora (conserva el nombre)"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5" />
                           </button>
                           {tariffs.length > 1 && (
                             <button
