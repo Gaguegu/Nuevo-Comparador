@@ -616,6 +616,9 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                             value={t.name}
                             onChange={(e) => handleUpdateTariffName(t.id, e.target.value)}
                             placeholder={`Comercializadora ${idx + 1}`}
+                            data-tariff-id={t.id}
+                            data-table-section="potencia-header"
+                            data-period-idx="-1"
                             className="w-full bg-white/95 px-2 py-1 rounded-lg border border-amber-600/50 text-xs font-black text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-2xs"
                             title="Haz clic para modificar el nombre de la compañía"
                           />
@@ -751,6 +754,9 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                           value={t.name}
                           onChange={(e) => handleUpdateTariffName(t.id, e.target.value)}
                           placeholder={`Comercializadora ${idx + 1}`}
+                          data-tariff-id={t.id}
+                          data-table-section="energia-header"
+                          data-period-idx="-1"
                           className="w-full bg-white/95 px-2 py-1 rounded-lg border border-amber-600/50 text-xs font-black text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-600 shadow-2xs"
                           title="Haz clic para modificar el nombre de la compañía"
                         />
