@@ -325,53 +325,66 @@ export const PrecioEnergiaView: React.FC<PrecioEnergiaViewProps> = ({
                 </span>
               </div>
 
-              <div className="flex items-center gap-2">
+              {/* Input a ancho completo para máxima comodidad en móvil */}
+              <div className="w-full">
                 <input
                   type="text"
                   value={currentMobileTariff.name}
                   onChange={(e) => handleUpdateTariffName(currentMobileTariff.id, e.target.value)}
                   placeholder={`Comercializadora ${selectedMobileIndex + 1}`}
-                  className="flex-1 bg-white text-slate-950 font-black text-base px-3.5 py-2.5 rounded-xl border-2 border-amber-600 focus:outline-none focus:ring-2 focus:ring-slate-900 shadow-inner"
+                  className="w-full bg-white text-slate-950 font-black text-base px-3.5 py-2.5 rounded-xl border-2 border-amber-600 focus:outline-none focus:ring-2 focus:ring-slate-900 shadow-inner"
                 />
+              </div>
 
+              {/* Botones de acción móvil: Añadir, Copiar y Borrar (Distribución perfecta en 3 columnas al 100% de ancho) */}
+              <div className="grid grid-cols-3 gap-2 pt-0.5 w-full">
+                {/* Botón Añadir */}
+                <button
+                  type="button"
+                  onClick={handleAddTariff}
+                  disabled={tariffs.length >= MAX_TARIFFS}
+                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
+                    tariffs.length < MAX_TARIFFS
+                      ? 'bg-emerald-700 hover:bg-emerald-800 text-white border border-emerald-600 shadow-emerald-950/20'
+                      : 'bg-amber-300/60 text-amber-950/50 border border-amber-400/50 cursor-not-allowed'
+                  }`}
+                  title={tariffs.length < MAX_TARIFFS ? "Añadir nueva comercializadora" : `Máximo ${MAX_TARIFFS} comercializadoras`}
+                >
+                  <Plus className="w-4 h-4 shrink-0" />
+                  <span className="truncate">Añadir</span>
+                </button>
+
+                {/* Botón Copiar */}
                 <button
                   type="button"
                   onClick={() => handleDuplicateTariff(currentMobileTariff)}
-                  className="p-2.5 bg-amber-300 hover:bg-amber-200 text-slate-900 rounded-xl transition"
-                  title="Duplicar comercializadora"
+                  disabled={tariffs.length >= MAX_TARIFFS}
+                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
+                    tariffs.length < MAX_TARIFFS
+                      ? 'bg-amber-100 hover:bg-white text-slate-900 border border-amber-600/40'
+                      : 'bg-amber-300/60 text-amber-950/50 border border-amber-400/50 cursor-not-allowed'
+                  }`}
+                  title="Duplicar esta comercializadora con todos sus precios"
                 >
-                  <Copy className="w-4 h-4" />
+                  <Copy className="w-4 h-4 shrink-0 text-slate-800" />
+                  <span className="truncate">Copiar</span>
                 </button>
 
-                {tariffs.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteTariff(currentMobileTariff.id)}
-                    className="p-2.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-xl transition"
-                    title="Eliminar comercializadora"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-
-              {/* Quick company name presets for 1-tap naming */}
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1">
-                <span className="text-[10px] font-extrabold text-amber-950 uppercase shrink-0">
-                  Compañías:
-                </span>
-                {['Iberdrola', 'Endesa', 'Naturgy', 'TotalEnergies', 'Repsol', 'Octopus', 'Visalia', 'Niba'].map(
-                  (comp) => (
-                    <button
-                      key={comp}
-                      type="button"
-                      onClick={() => handleUpdateTariffName(currentMobileTariff.id, comp)}
-                      className="shrink-0 px-2.5 py-1 text-[11px] font-bold bg-white/90 hover:bg-white text-slate-900 rounded-lg border border-amber-600/30 transition active:scale-95"
-                    >
-                      {comp}
-                    </button>
-                  )
-                )}
+                {/* Botón Borrar */}
+                <button
+                  type="button"
+                  onClick={() => handleDeleteTariff(currentMobileTariff.id)}
+                  disabled={tariffs.length <= 1}
+                  className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition shadow-sm active:scale-95 cursor-pointer ${
+                    tariffs.length > 1
+                      ? 'bg-red-600 hover:bg-red-700 text-white border border-red-700 shadow-red-950/20'
+                      : 'bg-amber-300/60 text-amber-950/40 border border-amber-400/40 cursor-not-allowed'
+                  }`}
+                  title={tariffs.length > 1 ? "Eliminar esta comercializadora" : "Debe haber al menos 1 comercializadora"}
+                >
+                  <Trash2 className="w-4 h-4 shrink-0" />
+                  <span className="truncate">Borrar</span>
+                </button>
               </div>
             </div>
 
